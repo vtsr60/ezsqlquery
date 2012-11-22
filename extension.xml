@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<software>
+
+	<metadata>
+		<name>SQL Query Datatype</name>
+		<version>1.0</version>
+		<copyright>Copyright 2012</copyright>
+		<license>GNU General Public License v2.0</license>
+	</metadata>
+
+	<dependencies>
+		<requires></requires>
+	</dependencies>
+
+</software>
