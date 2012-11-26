@@ -1,38 +1,61 @@
-{def $limitations = $class_attribute.content}
+{def $content = $class_attribute.content}
 
 <div class="block">
-    <label>{'Default value'|i18n( 'extension/nxc_string' )}:</label>
-    {if $class_attribute.data_text1}
-        <p>{$class_attribute.data_text1|wash}</p>
+    <label>{'SQL Keys'|i18n( 'design/standard/class/datatype' )}:</label>
+    {if and(is_set($content.SQLKeys), count($content.SQLKeys))}
+        <ul><li>{$content.SQLKeys|implode('</li><li>')}</li></ul>
     {else}
-        <p><i>{'Empty'|i18n( 'extension/nxc_string' )}</i></p>
+        <p>{'No Keys present, So insert, delete and update operation could not be preformed proerly.'|i18n( 'design/standard/class/datatype' )}</p>
     {/if}
 </div>
 
 <div class="block">
-    <label>{'Matching limitations'|i18n( 'extension/nxc_string' )}:</label>
-	{if gt( count( $limitations.matching ), 0 ) }
-		<ul>
-		{foreach $limitations.matching as $limitation}
-			<li><strong>{$limitation.expression|wash}</strong> {if $limitation.description}({$limitation.description|wash}){/if}</li>
-		{/foreach}
-		</ul>
-	{else}
-		{'There are no limitations'|i18n( 'extension/nxc_string' )}
-	{/if}
+    <label>{'Select Query'|i18n( 'extension/nxc_string' )}:</label>
+    <pre>{$content.SelectQuery}</pre>
 </div>
 
 <div class="block">
-    <label>{'Not-matching limitations'|i18n( 'extension/nxc_string' )}:</label>
-	{if gt( count( $limitations.not_matching ), 0 ) }
-		<ul>
-		{foreach $limitations.not_matching as $limitation}
-			<li><strong>{$limitation.expression|wash}</strong> {if $limitation.description}({$limitation.description|wash}){/if}</li>
-		{/foreach}
-		</ul>
-	{else}
-		{'There are no limitations'|i18n( 'extension/nxc_string' )}
-	{/if}
+    <label>{'Insert Query'|i18n( 'extension/nxc_string' )}:</label>
+    {if $content.can_insert}
+        <pre>{$content.InsertQuery}</pre>
+    {else}
+        <p>Insert query not present, So insert operation can not be preformed on this attribute</p>
+    {/if}
 </div>
 
-{undef $limitations}
+<div class="block">
+    <label>{'Update Query'|i18n( 'extension/nxc_string' )}:</label>
+    {if $content.can_update}
+        <pre>{$content.UpdateQuery}</pre>
+    {else}
+        <p>Update query not present, So update operation can not be preformed on this attribute</p>
+    {/if}
+
+</div>
+
+<div class="block">
+    <label>{'Delete Query'|i18n( 'extension/nxc_string' )}:</label>
+    {if $content.can_delete}
+        <pre>{$content.DeleteQuery}</pre>
+    {else}
+        <p>Delete query not present, So delete operation can not be preformed on this attribute</p>
+    {/if}
+
+</div>
+
+<div class="block">
+    <label>{'Views'|i18n( 'extension/nxc_string' )}:</label>
+    {if count($content.Views)}
+        {foreach $content.Views as $key => $view}
+            <div class="block">
+                <label>{$key}:</label>
+                <pre>{$view}</pre>
+            </div>
+        {/foreach}
+    {else}
+        <p>No views was add.</p>
+    {/if}
+
+</div>
+
+{undef $content}
