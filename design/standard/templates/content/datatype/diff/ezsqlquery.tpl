@@ -1,4 +1,3 @@
-{$diff.extrainfo[6].creator.name|attribute('show', 2)}
 <div class="block">
 {foreach $diff.versionshistory as $version => $change}
     <div class="block">
