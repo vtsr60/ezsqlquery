@@ -3,4 +3,5 @@
 [DataTypeSettings]
 ExtensionDirectories[]=ezsqlquery
 AvailableDataTypes[]=ezsqlquery
+
 */ ?>

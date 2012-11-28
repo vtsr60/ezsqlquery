@@ -1,9 +1,8 @@
 <?php
 /**
- * @package nxcString
- * @class   nxc_stringInfo
- * @author  Serhey Dolgushev <serhey.dolgushev@nxc.no>
- * @date    08 Sep 2011
+ * @package ezsqlquery
+ * @class   ezsqlqueryInfo
+ * @author  Vivakaran, Thanks Senthil Rajan(Raj) <vtsr60@gmail.com>
  **/
 
 class ezsqlqueryInfo {

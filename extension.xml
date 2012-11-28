@@ -9,7 +9,9 @@
 	</metadata>
 
 	<dependencies>
-		<requires></requires>
-	</dependencies>
+        <requires>
+            <extension name="ezjscore" />
+        </requires>
+    </dependencies>
 
 </software>

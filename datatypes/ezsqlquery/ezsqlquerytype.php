@@ -404,13 +404,6 @@ class eZSQLQueryType extends eZDataType {
         }
     }
 
-    /*!
-     TO IMPLEMENTE
-    */
-    function metaData( $contentObjectAttribute )
-    {
-        return $contentObjectAttribute->attribute( 'data_text' );
-    }
 
     function serializeContentClassAttribute( $classAttribute, $attributeNode, $attributeParametersNode )
     {
@@ -510,6 +503,22 @@ class eZSQLQueryType extends eZDataType {
                         'extrainfo' => $extradetials);
     }
 
+    /*!
+     \return true if the datatype can be indexed
+    */
+    function isIndexable()
+    {
+        return true;
+    }
+
+
+    /*!
+     Returns the meta data used for storing search indeces.
+    */
+    function metaData( $contentObjectAttribute )
+    {
+        return $contentObjectAttribute->content();
+    }
 
     //STATIC FUNCTIONS
     static function storeClassDOMDocument( $doc, $classAttribute )

@@ -10,12 +10,12 @@
 </div>
 
 <div class="block">
-    <label>{'Select Query'|i18n( 'extension/nxc_string' )}:</label>
+    <label>{'Select Query'|i18n( 'extension/ezsqlquery' )}:</label>
     <pre>{$content.SelectQuery}</pre>
 </div>
 
 <div class="block">
-    <label>{'Insert Query'|i18n( 'extension/nxc_string' )}:</label>
+    <label>{'Insert Query'|i18n( 'extension/ezsqlquery' )}:</label>
     {if $content.can_insert}
         <pre>{$content.InsertQuery}</pre>
     {else}
@@ -24,7 +24,7 @@
 </div>
 
 <div class="block">
-    <label>{'Update Query'|i18n( 'extension/nxc_string' )}:</label>
+    <label>{'Update Query'|i18n( 'extension/ezsqlquery' )}:</label>
     {if $content.can_update}
         <pre>{$content.UpdateQuery}</pre>
     {else}
@@ -34,7 +34,7 @@
 </div>
 
 <div class="block">
-    <label>{'Delete Query'|i18n( 'extension/nxc_string' )}:</label>
+    <label>{'Delete Query'|i18n( 'extension/ezsqlquery' )}:</label>
     {if $content.can_delete}
         <pre>{$content.DeleteQuery}</pre>
     {else}
@@ -44,7 +44,7 @@
 </div>
 
 <div class="block">
-    <label>{'Views'|i18n( 'extension/nxc_string' )}:</label>
+    <label>{'Views'|i18n( 'extension/ezsqlquery' )}:</label>
     {if count($content.Views)}
         {foreach $content.Views as $key => $view}
             <div class="block">

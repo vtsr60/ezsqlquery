@@ -1,0 +1,30 @@
+SQLQuery datatype extension documentation
+-----------------------------------------
+
+ezsqlquery introduces a datatype which allow you to manipulate SQL Table directly. These datatype features are the listed below:
+
+* Gets multiple data from the SQL Table, depend on the Select query provided on the content class
+* Allows to preform INSERT/DELETE/UPDATE operation on the table when editing the content objec
+* SELECT/INSERT/DELETE/UPDATE query can be changed dynamically based on ethe value of the content object
+* Added extra view(SELECT) query which allow refine the data
+* SQL Table change will be version, if its edited using content object
+* Index the content to solr( Need ezfind )
+
+NOTES
+-----
+* SELECT/INSERT/DELETE/UPDATE query can use all the ez template feature. Query can access the node information using following variables:
+    - {$node} : Varaible to access the current content node
+    - {$object} : Varaible to access the current content object
+    - {$data_map} : Varaible to access the current content object datamap
+* INSERT/DELETE/UPDATE query will have access to SELECT query columns name entered in the content class.
+
+EXAMPLE CONTENT CLASS
+---------------------
+SQL Keys: id,name
+Select Query: select id, name, value from example_table;
+Insert Query: INSERT INTO example_table (id, name, value) VALUES ('{$id}', '{$name}', '{$value}');
+Update Query: UPDATE example_table SET value = '{$value}' WHERE id = '{$id}' AND name = '{$name}';
+Delete Query: DELETE FROM example_table WHERE id = '{$id}' AND name = '{$name}'
+Views:
+    Name - view1
+    Query - SELECT DISTINCT name FROM example_table ORDER BY name ASC
