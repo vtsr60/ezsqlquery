@@ -6,6 +6,7 @@ class eZSQLQueryType extends eZDataType {
 	const DATA_TYPE_STRING     = 'ezsqlquery';
 	const DEFAULT_STRING_FIELD = 'data_text1';
     const SQL_KEYS_VARIABLE = "_ezsqlquery_sql_keys_";
+    const SQL_HEADINGS_VARIABLE = "_ezsqlquery_sql_headings_";
     const SELECT_QUERY_VARIABLE = "_ezsqlquery_select_query_";
 	const INSERT_QUERY_VARIABLE = "_ezsqlquery_insert_query_";
 	const UPDATE_QUERY_VARIABLE = "_ezsqlquery_update_query_";
@@ -180,6 +181,8 @@ class eZSQLQueryType extends eZDataType {
                 $content[$name] = self::processQuery($query, $contentObjectAttribute);
             }
         }
+        if(!$content['main']['result'])
+            $content['main']['heading'] = $classContent['Headings'];
         return $content;
     }
 
@@ -202,6 +205,11 @@ class eZSQLQueryType extends eZDataType {
         $sqlKeysName = $base . self::SQL_KEYS_VARIABLE . $classAttribute->attribute( 'id' );
         if( $http->hasPostVariable( $sqlKeysName ) && trim($http->postVariable( $sqlKeysName )) != ''){
 			$content['SQLKeys'] = explode(',', trim($http->postVariable( $sqlKeysName )));
+        }
+
+        $headingsName = $base . self::SQL_HEADINGS_VARIABLE . $classAttribute->attribute( 'id' );
+        if( $http->hasPostVariable( $headingsName ) && trim($http->postVariable( $headingsName )) != ''){
+            $content['Headings'] = explode(',', trim($http->postVariable( $headingsName )));
         }
 
         $selectQueryName = $base . self::SELECT_QUERY_VARIABLE . $classAttribute->attribute( 'id' );
@@ -261,6 +269,7 @@ class eZSQLQueryType extends eZDataType {
     function defaultClassAttributeContent()
     {
         return array( 'SQLKeys' => array(),
+            'Headings' => array(),
             'SelectQuery' => '',
             'InsertQuery' => '',
             'UpdateQuery' => '',
@@ -291,6 +300,9 @@ class eZSQLQueryType extends eZDataType {
         $keys = $doc->createElement( 'keys' );
         $keys->setAttribute( 'value', implode(',',$content['SQLKeys']) );
         $root->appendChild( $keys );
+        $headings = $doc->createElement( 'headings' );
+        $headings->setAttribute( 'value', implode(',',$content['Headings']) );
+        $root->appendChild( $headings );
 
         $views = $doc->createElement( 'views' );
         foreach ( $content['Views'] as $key => $view )
@@ -314,6 +326,7 @@ class eZSQLQueryType extends eZDataType {
         $content = $this->defaultClassAttributeContent();
         $root = $doc->documentElement;
         $content['SQLKeys'] = explode(',', $root->getElementsByTagName( 'keys' )->item( 0 )->getAttribute( 'value' ));
+        $content['Headings'] = explode(',', $root->getElementsByTagName( 'headings' )->item( 0 )->getAttribute( 'value' ));
         $content['SelectQuery'] = $root->getElementsByTagName( 'select-query' )->item( 0 )->getAttribute( 'value' );
         $content['InsertQuery'] = $root->getElementsByTagName( 'insert-query' )->item( 0 )->getAttribute( 'value' );
         $content['UpdateQuery'] = $root->getElementsByTagName( 'update-query' )->item( 0 )->getAttribute( 'value' );
@@ -414,6 +427,10 @@ class eZSQLQueryType extends eZDataType {
         $keyNode->appendChild( $dom->createTextNode( implode(',',$content['SQLKeys']) ) );
         $attributeParametersNode->appendChild( $keyNode );
 
+        $headingsNode = $dom->createElement( 'headings' );
+        $headingsNode->appendChild( $dom->createTextNode( implode(',',$content['Headings']) ) );
+        $attributeParametersNode->appendChild( $headingsNode );
+
         $selectNode = $dom->createElement( 'select-query' );
         $selectNode->appendChild( $dom->createTextNode( $content['SelectQuery']) );
         $attributeParametersNode->appendChild( $selectNode );
@@ -450,6 +467,7 @@ class eZSQLQueryType extends eZDataType {
         $content = $classAttribute->content();
 
         $content['SQLKeys'] = explode(',', $attributeParametersNode->getElementsByTagName( 'keys' )->item( 0 )->textContent);
+        $content['Headings'] = explode(',', $attributeParametersNode->getElementsByTagName( 'headings' )->item( 0 )->textContent);
         $content['SelectQuery'] = $attributeParametersNode->getElementsByTagName( 'select-query' )->item( 0 )->textContent;
         $content['InsertQuery'] = $attributeParametersNode->getElementsByTagName( 'insert-query' )->item( 0 )->textContent;
         $content['UpdateQuery'] = $attributeParametersNode->getElementsByTagName( 'update-query' )->item( 0 )->textContent;

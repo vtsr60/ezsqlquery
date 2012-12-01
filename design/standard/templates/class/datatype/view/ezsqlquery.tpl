@@ -1,6 +1,15 @@
 {def $content = $class_attribute.content}
 
 <div class="block">
+    <label>{'SQL Column'|i18n( 'design/standard/class/datatype' )}:</label>
+{if and(is_set($content.Headings), count($content.Headings))}
+    <ul><li>{$content.Headings|implode('</li><li>')}</li></ul>
+    {else}
+    <p>{'No Column present, So insert, delete and update operation could not be preformed proerly.'|i18n( 'design/standard/class/datatype' )}</p>
+{/if}
+</div>
+
+<div class="block">
     <label>{'SQL Keys'|i18n( 'design/standard/class/datatype' )}:</label>
     {if and(is_set($content.SQLKeys), count($content.SQLKeys))}
         <ul><li>{$content.SQLKeys|implode('</li><li>')}</li></ul>

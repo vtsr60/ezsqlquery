@@ -5,6 +5,12 @@
 <hr />
 {* SQL Keys. *}
 <div class="block">
+    <label>{'SQL column(Seperated by Comma)'|i18n( 'design/standard/class/datatype' )}:</label>
+    <input class="box" type="text" name="ContentClass_ezsqlquery_sql_headings_{$class_attribute.id}" value="{if is_set($content.Headings)}{$content.Headings|implode(',')}{/if}" />
+</div>
+
+{* SQL Keys. *}
+<div class="block">
     <label>{'SQL Keys(Seperated by Comma)'|i18n( 'design/standard/class/datatype' )}:</label>
     <input class="box" type="text" name="ContentClass_ezsqlquery_sql_keys_{$class_attribute.id}" value="{if is_set($content.SQLKeys)}{$content.SQLKeys|implode(',')}{/if}" />
 </div>

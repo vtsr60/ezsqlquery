@@ -5,24 +5,22 @@ $class_content = $attribute.class_content
 $keys = $class_content.SQLKeys}
 
 <div class="block">
+    <input type="submit" title="Use this button to update the values of this attribute if its depend on other attribute.." value="Update the attribute" name="StoreButton" class="button">
     {if and($main_content.result, $main_content.count|gt(0))}
         <table id="sqlquery-jquery-table-{$attribute.id}" class="list" cellspacing="0" summary="{'Query \'%sql\' returned %count result'|i18n( 'design/standard/class/datatype',, hash('%sql', $main_content.sql, '%count', $main_content.count))}">
             <tr>
-                {if $class_content.can_delete}
-                    <th class="tight"><img width="16" height="16" title="Invert selection." onclick="ezjs_toggleCheckboxes( document.editform, '{$attribute_base}_ezsqlquery_delete_row_{$attribute.id}[]' ); return false;" alt="Invert selection." src="/design/admin2/images/toggle-button-16x16.gif" /></th>
-                {/if}
+                <th class="tight">{if $class_content.can_delete}<img width="16" height="16" title="Invert selection." onclick="ezjs_toggleCheckboxes( document.editform, '{$attribute_base}_ezsqlquery_delete_row_{$attribute.id}[]' ); return false;" alt="Invert selection." src="/design/admin2/images/toggle-button-16x16.gif" />{/if}</th>
                 {foreach $main_content.heading as $heading}
                     <th>{$heading|wash()}</th>
                 {/foreach}
             </tr>
             {foreach $main_content.result as $index => $row}
                 <tr>
-                    {if $class_content.can_delete}
-                        <td><input type="checkbox" title="Remove this row." value="{$index}" name="{$attribute_base}_ezsqlquery_delete_row_{$attribute.id}[]"></td>
-                    {/if}
+
+                    <td><input type="checkbox" title="Remove this row." value="{$index}" name="{$attribute_base}_ezsqlquery_delete_row_{$attribute.id}[]" {if $class_content.can_delete|not()}disabled="disabled"{/if}></td>
                     {foreach $row as $heading => $value}
                         <td>
-                            {if and($class_content.SQLKeys|contains($heading), $class_content.can_update)}
+                            {if or($class_content.SQLKeys|contains($heading), $class_content.can_update|not())}
                                 {$value|wash()}
                             {else}
                                 <input class="box ezcc-{$attribute.object.content_class.identifier} ezcca-{$attribute.object.content_class.identifier}_{$attribute.contentclass_attribute_identifier}" type="text" name="{$attribute_base}_ezsqlquery_row_{$attribute.id}[{$index}][{$heading}]" value="{$value|wash( xhtml )}" />

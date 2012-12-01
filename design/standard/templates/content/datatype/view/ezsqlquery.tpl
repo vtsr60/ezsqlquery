@@ -18,7 +18,7 @@
                 {/foreach}
             </table>
         {else}
-            <span class="warning-message">{'Query %sql returned no result'|i18n( 'design/standard/class/datatype',, hash('sql', $item.sql))}</span>
+            <span class="warning-message">{'Query %sql returned no result'|i18n( 'design/standard/class/datatype',, hash('%sql', $item.sql))}</span>
         {/if}
     </div>
 {/foreach}
