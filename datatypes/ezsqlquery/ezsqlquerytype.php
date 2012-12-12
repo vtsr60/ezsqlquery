@@ -41,8 +41,10 @@ class eZSQLQueryType extends eZDataType {
                         $newrows[] = $newitem;
                         $newitem = array();
                     }
-                    if(trim($value) != '')
-                        $newitem[$key] = mysql_real_escape_string($value);
+                    if(trim($value) != ''){
+			$db     = eZDB::instance();
+                        $newitem[$key] = $db->escapeString( $value );
+			}
                 }
 
             }
@@ -69,6 +71,7 @@ class eZSQLQueryType extends eZDataType {
         $classContent = $contentObjectAttribute->attribute('contentclass_attribute')->content();
         $content = $contentObjectAttribute->content();
         $updaterows = array();
+	$db     = eZDB::instance();
         if ( $http->hasPostVariable( $base . '_ezsqlquery_row_' . $contentObjectAttribute->attribute( 'id' ) ) )
         {
             $rows = $http->postVariable( $base . '_ezsqlquery_row_' . $contentObjectAttribute->attribute( 'id' ) );
@@ -77,7 +80,7 @@ class eZSQLQueryType extends eZDataType {
                 $newvalues = $content['main']['result'][$index];
                 foreach($row as $key => $value ){
                     $rowmodified = $rowmodified || ($value != $content['main']['result'][$index][$key]);
-                    $newvalues[$key] = mysql_real_escape_string($value);
+                    $newvalues[$key] = $db->escapeString( $value );
                 }
                 if($rowmodified){
                     $updaterows[] = $newvalues;
@@ -102,7 +105,7 @@ class eZSQLQueryType extends eZDataType {
                         }
                     }
                     if(trim($value) != '')
-                        $newitem[$key] = mysql_real_escape_string($value);
+                        $newitem[$key] = $db->escapeString( $value );
                 }
             }
             if(count($newitem) && !count(array_diff($classContent['SQLKeys'], array_keys($newitem)))){
