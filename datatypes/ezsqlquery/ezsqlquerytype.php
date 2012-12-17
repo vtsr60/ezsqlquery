@@ -27,6 +27,7 @@ class eZSQLQueryType extends eZDataType {
 
     function validateObjectAttributeHTTPInput( $http, $base, $contentObjectAttribute )
     {
+		$db = eZDB::instance();
         $classContent = $contentObjectAttribute->attribute('contentclass_attribute')->content();
         if ( $http->hasPostVariable( $base . '_ezsqlquery_new_row_' . $contentObjectAttribute->attribute( 'id' ) ) )
         {
@@ -41,10 +42,8 @@ class eZSQLQueryType extends eZDataType {
                         $newrows[] = $newitem;
                         $newitem = array();
                     }
-                    if(trim($value) != ''){
-			$db     = eZDB::instance();
-                        $newitem[$key] = $db->escapeString( $value );
-			}
+                    if(trim($value) != '')
+                        $newitem[$key] = $db->escapeString($value);
                 }
 
             }
@@ -67,11 +66,11 @@ class eZSQLQueryType extends eZDataType {
     */
     function fetchObjectAttributeHTTPInput( $http, $base, $contentObjectAttribute )
     {
+		$db = eZDB::instance();
         $data = array();
         $classContent = $contentObjectAttribute->attribute('contentclass_attribute')->content();
         $content = $contentObjectAttribute->content();
         $updaterows = array();
-	$db     = eZDB::instance();
         if ( $http->hasPostVariable( $base . '_ezsqlquery_row_' . $contentObjectAttribute->attribute( 'id' ) ) )
         {
             $rows = $http->postVariable( $base . '_ezsqlquery_row_' . $contentObjectAttribute->attribute( 'id' ) );
@@ -80,7 +79,7 @@ class eZSQLQueryType extends eZDataType {
                 $newvalues = $content['main']['result'][$index];
                 foreach($row as $key => $value ){
                     $rowmodified = $rowmodified || ($value != $content['main']['result'][$index][$key]);
-                    $newvalues[$key] = $db->escapeString( $value );
+                    $newvalues[$key] = $db->escapeString($value);
                 }
                 if($rowmodified){
                     $updaterows[] = $newvalues;
@@ -105,7 +104,7 @@ class eZSQLQueryType extends eZDataType {
                         }
                     }
                     if(trim($value) != '')
-                        $newitem[$key] = $db->escapeString( $value );
+                        $newitem[$key] = $db->escapeString($value);
                 }
             }
             if(count($newitem) && !count(array_diff($classContent['SQLKeys'], array_keys($newitem)))){
@@ -546,6 +545,34 @@ class eZSQLQueryType extends eZDataType {
     {
         $docText = self::domString( $doc );
         $classAttribute->setAttribute( 'data_text5', $docText );
+    }
+
+
+    /*!
+     Fetches the product option information for option with ID \a $optionID and returns this information.
+     This will be called from the basket when a new product with an option is added, it is then up to the
+     specific datatype to return proper data. It will also be used to recalcuate prices.
+
+     \param $objectAttribute The attribute that the datatype controls.
+     \param $optionID The ID of the option which information should be returned from.
+     \param $productItem The product item object which contains the option, is available for reading only.
+     \return An array structure which contains:
+             - id - The unique ID of the selected option, this must be unique in the attribute and will later on
+                    be used to recalculate prices.
+             - name - The name of the option list
+             - value - The display string of the selected option
+             - additional_price - A value which is added to the total product price, set to 0 or \c false if no price is used.
+             If the option could not be found it should return \c false, if not supported it should return \c null.
+     \sa handleProductOption
+    */
+    function productOptionInformation( $objectAttribute, $optionID, $productItem )
+    {
+        $result = array();
+        $result['value'] = $optionID;
+        $result['name'] = $objectAttribute->attribute('contentclass_attribute_identifier');
+        $result['additional_price'] = 0.0;
+        $result['id'] = $optionID;
+        return $result;
     }
 
     /*!
