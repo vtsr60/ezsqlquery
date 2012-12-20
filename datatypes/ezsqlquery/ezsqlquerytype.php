@@ -610,7 +610,7 @@ class eZSQLQueryType extends eZDataType {
         $resourceData["text"] = $templateText;
         $contentObject = $contentObjectAttribute->attribute('object');
         $tpl->setVariable( "object", $contentObject);
-        $tpl->setVariable( "node", $contentObject->attribute('main_node'));
+        $tpl->setVariable( "main_node", $contentObject->attribute('main_node'));
         $tpl->setVariable( "data_map", $contentObject->attribute('data_map'));
         foreach($extraparama as $key => $value)
             $tpl->setVariable( $key, $value );
