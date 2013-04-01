@@ -79,7 +79,7 @@ class eZSQLQueryType extends eZDataType {
                 $newvalues = $content['main']['result'][$index];
                 foreach($row as $key => $value ){
                     $rowmodified = $rowmodified || ($value != $content['main']['result'][$index][$key]);
-                    $newvalues[$key] = $db->escapeString($value);
+                    $newvalues[$key] = is_array($value) ? $db->escapeString(implode(',', $value)) : $db->escapeString($value);
                 }
                 if($rowmodified){
                     $updaterows[] = $newvalues;
