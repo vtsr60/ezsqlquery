@@ -131,6 +131,14 @@ class eZSQLQueryType extends eZDataType {
 
     function onPublish( $contentObjectAttribute, $contentObject, $publishedNodes )
     {
+        // check if current attribute can be updated
+        if(
+            (bool) $contentObjectAttribute->attribute( 'can_translate' ) === false
+            && $contentObject->attribute( 'initial_language_code' ) !== $contentObjectAttribute->attribute( 'language_code' )
+        ) {
+            return true;
+        }
+
         $serializedata = $contentObjectAttribute->attribute( 'data_text' );
         $data = unserialize($serializedata);
         $classContent = $contentObjectAttribute->attribute('contentclass_attribute')->content();
